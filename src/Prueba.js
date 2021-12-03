@@ -34,6 +34,8 @@ function Prueba(props) {
                         return true;
                     }
                 });
+
+
                 // dataJson.data.features.attributes.Title.filter((dato,index ) => {
                 //
                 //     arreglado (dataJson.data.features.attributes.Title.indexOf(dato) === index);
