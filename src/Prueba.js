@@ -65,10 +65,11 @@ function Prueba(props) {
     };
 
 
-    const geometric = (event) =>{ event.preventDefault()
+    const geometric = (event) =>{// event.preventDefault()
         const pelis = jsonRaw.filter((movie) => movie.attributes.Title == event.target.value)
         const geometria = pelis.map((data) => data.geometry)
-
+        console.log(geometria);
+        console.log(pelis);
 
     }
 
