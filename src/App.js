@@ -8,9 +8,9 @@ function App() {
 
     return (
 
-      // <Maps/>
+       <Maps/>
 
-        <Prueba/>
+        //<Prueba/>
     );
 
 

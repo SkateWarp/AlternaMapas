@@ -30,16 +30,22 @@ const divStyle = {
 }
 
 const info = () => {
-    // render() { <InfoWindow
-    //    // onLoad={onLoad}
-    //     position={position}
-    // >
-    //     <div style={divStyle}>
-    //         <h1>InfoWindow</h1>
-    //     </div>
-    // </InfoWindow>
-    // }
 
+    return (
+    <div>
+
+      <InfoWindow
+       // onLoad={onLoad}
+        position={position}
+    >
+        <div style={divStyle}>
+            <h1>InfoWindow</h1>
+        </div>
+    </InfoWindow>
+
+
+    </div>
+    )
 }
 class Maps extends Component {
     render() {
