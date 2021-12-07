@@ -1,35 +1,68 @@
-// import React, {useEffect, useState} from "react";
-// import PropTypes from 'prop-types';
-// import axios from "axios";
-// import Select from 'react-select'
-//
-// // eslint-disable-next-line react-hooks/rules-of-hooks
-// const [jsonGuardado, setJsonGuardado] = useState([]);
-//
-// function Maps(props) {
-//
-//
-//
-//     const dataJson = () => {
-//
-//         axios.get('https://coagisweb.cabq.gov/arcgis/rest/services/public/FilmLocations/MapServer/0/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&f=pjson')
-//             .then(dataJson => setJsonGuardado(dataJson.data.features));
-//
-//     }
-//
-//
-//     return (
-//         <div>
-//             {['Type'].map(key => (
-//                 <select key={key}>
-//                     {this.state.data.map(({ [key]: value }) => <option key={value}>{value}</option>)}
-//                 </select>
-//             ))}
-//         </div>
-//     );
-// }
-// const Mapas = () => <Select options={jsonGuardado.features.attributes.type} />
-// export default Maps;
-//
-//
-//
+import React, { Component } from 'react';
+import {GoogleMap, InfoWindow, LoadScript, Marker} from '@react-google-maps/api';
+import Prueba from "./Prueba";
+
+
+const containerStyle = {
+    width: '1200px',
+    height: '800px'
+};
+
+const center = {
+    lat: 18.7009047,
+    lng: -70.1654584
+};
+
+const position = {
+    lat: 37.772,
+    lng: -122.214
+}
+
+const onLoad = marker => {
+    console.log('marker: ', marker)
+}
+
+
+const divStyle = {
+    background: `white`,
+    border: `1px solid #ccc`,
+    padding: 15
+}
+
+const info = () => {
+    // render() { <InfoWindow
+    //    // onLoad={onLoad}
+    //     position={position}
+    // >
+    //     <div style={divStyle}>
+    //         <h1>InfoWindow</h1>
+    //     </div>
+    // </InfoWindow>
+    // }
+
+}
+class Maps extends Component {
+    render() {
+        return (
+            <LoadScript
+                googleMapsApiKey="AIzaSyA2pRlvgrXv1MNRJOMRaaHG7LypkZpym4I"
+            >
+                <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={center}
+                    zoom={7}
+                >
+                    <Marker
+                        onClick={info}
+                        position={position}
+                    />
+
+
+                    { /* Child components, such as markers, info windows, etc. */ }
+                    <></>
+                </GoogleMap>
+            </LoadScript>
+        )
+    }
+}
+export default Maps;

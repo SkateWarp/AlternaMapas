@@ -1,7 +1,6 @@
-import React, {Component, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 // import Select from 'react-select'
 import axios from "axios";
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -14,20 +13,19 @@ function Prueba(props) {
 
     const [jsonGuardado, setJsonGuardado] = useState([]);
     const [valorGu, setValorGu] = useState();
-    const [valueData, setValueData] = useState([]);
-    const [Geome, setGeome] = useState([]);
-    const [jsonRaw, setJsonRaw] = useState([]);
+    const [jsonRaw, setJsonRaw] = useState([]); //Guardar JSON en crudo
 
     const dataJson = () => {
 
-        const array = [];
-        let arreglado = [];
+        let arreglado = []; //Se guarda JSON sin títulos repetidos
+
 
         axios.get('https://coagisweb.cabq.gov/arcgis/rest/services/public/FilmLocations/MapServer/0/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&f=pjson')
             .then(dataJson => {
+                //Obtención del JSON
                 setJsonRaw(dataJson.data.features);
                 arreglado = dataJson.data.features.filter(function (currentObject) {
-
+                    //Eliminación de nombres repetidos
                     if (currentObject.attributes.Title in arreglado) {
                         return false;
                     } else {
@@ -35,49 +33,54 @@ function Prueba(props) {
                         return true;
                     }
                 });
-
-                const pelis = arreglado.filter((movie) => movie.attributes.Type == "Movie")
+                //Filtrado de películas únicamente
+                const pelis = arreglado.filter((movie) => movie.attributes.Type === "Movie")
                 setJsonGuardado(
-                    pelis
+                    pelis //Ojo, PELIS y JsonGuardado tienen mismos datos
                 )
-                console.log(pelis);
+                console.log("Filtro de solo películas",pelis);
 
             })
-        // dataJson.data.features.attributes.Title.filter((dato,index ) => {
+
+        // arreglado.map((data) => {
         //
-        //     arreglado (dataJson.data.features.attributes.Title.indexOf(dato) === index);
+        //     // console.log("Type", data.attributes.Type);
         //
+        //     array.push({value: data.attributes.Type, label: data.attributes.Title})
+        //     console.log("MÍRAME",array);
         //
+        //     // setValueData({value: data.attributes.Type, label: data.data.features.Title })
         // })
-
-        arreglado.map((data) => {
-
-            // console.log("Type", data.attributes.Type);
-
-            array.push({value: data.attributes.Type, label: data.attributes.Title})
-
-            // setValueData({value: data.attributes.Type, label: data.data.features.Title })
-        })
-
-        setValueData(array);
+        //
+        // setValueData(array);
 
         // setJsonGuardado(dataJson.data.features)
     };
 
 
-    const geometric = (event) =>{// event.preventDefault()
-        const pelis = jsonRaw.filter((movie) => movie.attributes.Title == event.target.value)
+    const geometric = (event) =>{
+        let arre = [];
+        // event.preventDefault() //Sino funciona, descomentalo. ¯\_(ツ)_/¯
+        const pelis = jsonRaw.filter((movie) => movie.attributes.Title === event.target.value)
         const geometria = pelis.map((data) => data.geometry)
-        console.log(geometria);
-        console.log(pelis);
+        const addrs = pelis.map((data) => data.attributes.Address)
+        arre = pelis.filter(function (currentObject) {
+            if (currentObject.attributes.Address in arre) {
+                return false;
+            } else {
+                arre[currentObject.attributes.Address] = true;
+                return true;
+            }
 
-    }
+
+        });
 
 
-// const Generate = valueData =>
-//     valueData.map(({value, label}) => (
-//         <MenuItem value={label}>{label}</MenuItem>));
-// const arreglo = []
+        setValorGu(event.target.value);
+        console.log("Impresión de datos geográficos",geometria);
+        console.log("Impresión de datos A",arre);
+      }
+
 
 
 useEffect(() => {
@@ -85,15 +88,6 @@ useEffect(() => {
     dataJson();
 
 }, []);
-
-
-//console.log("DATA", valueData);
-
-function handleChange(event) {
-
-    //  console.log("event", event.target.value);
-    setValorGu(event.target.value);
-}
 
 
 return (
@@ -114,9 +108,6 @@ return (
                     <MenuItem value={data.attributes.Title}>{data.attributes.Title}</MenuItem>
 
                 ))}
-                {/*<MenuItem value={10}>Ten</MenuItem>*/}
-                {/*<MenuItem value={20}>Twenty</MenuItem>*/}
-                {/*<MenuItem value={30}>Thirty</MenuItem>*/}
             </Select>
         </FormControl>
 
