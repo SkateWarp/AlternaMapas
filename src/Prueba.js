@@ -5,12 +5,14 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Maps from "./Maps";
 
 
 export default Prueba;
 
 function Prueba(props) {
 
+    const [direccion, setDireccion] = useState([]);
     const [jsonGuardado, setJsonGuardado] = useState([]);
     const [valorGu, setValorGu] = useState();
     const [jsonRaw, setJsonRaw] = useState([]); //Guardar JSON en crudo
@@ -38,7 +40,6 @@ function Prueba(props) {
                 setJsonGuardado(
                     pelis //Ojo, PELIS y JsonGuardado tienen mismos datos
                 )
-                console.log("Filtro de solo películas",pelis);
 
             })
 
@@ -63,7 +64,7 @@ function Prueba(props) {
         // event.preventDefault() //Sino funciona, descomentalo. ¯\_(ツ)_/¯
         const pelis = jsonRaw.filter((movie) => movie.attributes.Title === event.target.value)
         const geometria = pelis.map((data) => data.geometry)
-        const addrs = pelis.map((data) => data.attributes.Address)
+        //const addrs = pelis.map((data) => data.attributes.Address)
         arre = pelis.filter(function (currentObject) {
             if (currentObject.attributes.Address in arre) {
                 return false;
@@ -73,14 +74,14 @@ function Prueba(props) {
             }
 
 
-        });
 
+        });
+        setDireccion(arre);
 
         setValorGu(event.target.value);
-        console.log("Impresión de datos geográficos",geometria);
-        console.log("Impresión de datos A",arre);
-      }
 
+     //   ;
+      }
 
 
 useEffect(() => {
@@ -111,7 +112,12 @@ return (
             </Select>
         </FormControl>
 
-    </div>
+        {direccion.length > 0 && (
+
+            <Maps datos={direccion}/>
+
+        )}
+            </div>
 
 );
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {useState} from 'react';
 import {GoogleMap, InfoWindow, LoadScript, Marker} from '@react-google-maps/api';
 import Prueba from "./Prueba";
 
@@ -9,13 +9,18 @@ const containerStyle = {
 };
 
 const center = {
-    lat: 18.7009047,
-    lng: -70.1654584
+    lat: 35.106766,
+    lng: -106.629181
 };
 
 const position = {
-    lat: 37.772,
-    lng: -122.214
+    lat: -106.670,
+    lng: 35.095
+}
+
+const position2 = {
+    lat: 38.772,
+    lng: -123.214
 }
 
 const onLoad = marker => {
@@ -29,46 +34,84 @@ const divStyle = {
     padding: 15
 }
 
-const info = () => {
 
-    return (
-    <div>
+function Maps(props) {
 
-      <InfoWindow
-       // onLoad={onLoad}
-        position={position}
-    >
-        <div style={divStyle}>
-            <h1>InfoWindow</h1>
-        </div>
-    </InfoWindow>
+    const [posicionActual, setPosicionActual] = useState(null);
+    const {datos} = props;
+
+    const [state, setState] = useState(false);
 
 
-    </div>
-    )
+    const handleOpen = (position) => {
+
+        setPosicionActual(position);
+
+        setState(true);
+    };
+
+
+    const handleClose = () => {
+
+        setState(false);
+
+    };
+
+
+const encontrarPos = (x,y) => {
+
+    const posActual = {
+
+
+        lat: y,
+        lng: x
+
+    }
+
+return posActual;
+
 }
-class Maps extends Component {
-    render() {
-        return (
-            <LoadScript
-                googleMapsApiKey="AIzaSyA2pRlvgrXv1MNRJOMRaaHG7LypkZpym4I"
+//console.log(datos);
+    return (
+
+        <LoadScript
+            googleMapsApiKey="AIzaSyA2pRlvgrXv1MNRJOMRaaHG7LypkZpym4I"
+        >
+            <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={7}
             >
-                <GoogleMap
-                    mapContainerStyle={containerStyle}
-                    center={center}
-                    zoom={7}
-                >
+                {datos.map((data) => (
+
                     <Marker
-                        onClick={info}
-                        position={position}
+                        position={encontrarPos(data.geometry.x,data.geometry.y)}
+                        onClick={() => handleOpen(encontrarPos(data.geometry.x,data.geometry.y))}
                     />
 
 
-                    { /* Child components, such as markers, info windows, etc. */ }
-                    <></>
-                </GoogleMap>
-            </LoadScript>
-        )
-    }
+
+
+                ))}
+
+
+                {state && (
+
+                    <InfoWindow
+                        onCloseClick={handleClose}
+                        position={posicionActual}
+                    >
+                        <div style={divStyle}>
+
+                            <h1>InfoWindow</h1>
+                        </div>
+                    </InfoWindow>
+                )}
+
+            </GoogleMap>
+        </LoadScript>
+    )
+
 }
+
 export default Maps;
