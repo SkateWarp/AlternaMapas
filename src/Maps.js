@@ -38,12 +38,13 @@ const divStyle = {
 function Maps(props) {
 
     const [posicionActual, setPosicionActual] = useState(null);
+    const [datosDir, setDatosDir] = useState([]);
     const {datos} = props;
 
     const [state, setState] = useState(false);
 
 
-    const handleOpen = (position) => {
+    const handleOpen = (position, dir) => {
 
         setPosicionActual(position);
 
@@ -58,20 +59,31 @@ function Maps(props) {
     };
 
 
-    const encontrarPos = (x, y) => {
+const encontrarPos = (x,y) => {
 
-        const posActual = {
+    const posActual = {
 
 
-            lat: y,
-            lng: x
-
-        }
-
-        return posActual;
+        lat: y,
+        lng: x
 
     }
-//console.log(datos);
+
+return posActual;
+
+}
+
+const direccion = (site,addr,shoot) =>
+{
+
+    const datos = {
+        site: site
+
+
+    }
+
+}
+console.log(datos);
     return (
 
         <LoadScript
@@ -85,15 +97,17 @@ function Maps(props) {
                 {datos.map((data) => (
 
                     <Marker
-                        position={encontrarPos(data.geometry.x, data.geometry.y)}
-                        onClick={() => handleOpen(encontrarPos(data.geometry.x, data.geometry.y))}
+                        position={encontrarPos(data.geometry.x,data.geometry.y)}
+                        onClick={() => handleOpen(encontrarPos(data.geometry.x,data.geometry.y))}
                     />
+
+
 
 
                 ))}
 
 
-                {/*{state && (*/}
+                {state && (
 
                     <InfoWindow
                         onCloseClick={handleClose}
@@ -101,10 +115,14 @@ function Maps(props) {
                     >
                         <div style={divStyle}>
 
-                            <h1>InfoWindow</h1>
+                            <h1>
+                                {datos.map ((data) =>(
+
+                                data.attributes.Address))}
+                            </h1>
                         </div>
                     </InfoWindow>
-                {/*)}*/}
+                ) }
 
             </GoogleMap>
         </LoadScript>
