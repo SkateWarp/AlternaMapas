@@ -58,19 +58,19 @@ function Maps(props) {
     };
 
 
-const encontrarPos = (x,y) => {
+    const encontrarPos = (x, y) => {
 
-    const posActual = {
+        const posActual = {
 
 
-        lat: y,
-        lng: x
+            lat: y,
+            lng: x
+
+        }
+
+        return posActual;
 
     }
-
-return posActual;
-
-}
 //console.log(datos);
     return (
 
@@ -85,17 +85,15 @@ return posActual;
                 {datos.map((data) => (
 
                     <Marker
-                        position={encontrarPos(data.geometry.x,data.geometry.y)}
-                        onClick={() => handleOpen(encontrarPos(data.geometry.x,data.geometry.y))}
+                        position={encontrarPos(data.geometry.x, data.geometry.y)}
+                        onClick={() => handleOpen(encontrarPos(data.geometry.x, data.geometry.y))}
                     />
-
-
 
 
                 ))}
 
 
-                {state && (
+                {/*{state && (*/}
 
                     <InfoWindow
                         onCloseClick={handleClose}
@@ -106,7 +104,7 @@ return posActual;
                             <h1>InfoWindow</h1>
                         </div>
                     </InfoWindow>
-                )}
+                {/*)}*/}
 
             </GoogleMap>
         </LoadScript>
