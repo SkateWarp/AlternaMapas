@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {GoogleMap, InfoWindow, LoadScript, Marker} from '@react-google-maps/api';
-import Prueba from "./Prueba";
 
 
 const containerStyle = {
@@ -13,20 +12,6 @@ const center = {
     lng: -106.629181
 };
 
-const position = {
-    lat: -106.670,
-    lng: 35.095
-}
-
-const position2 = {
-    lat: 38.772,
-    lng: -123.214
-}
-
-const onLoad = marker => {
-    console.log('marker: ', marker)
-}
-
 
 const divStyle = {
     background: `white`,
@@ -38,16 +23,19 @@ const divStyle = {
 function Maps(props) {
 
     const [posicionActual, setPosicionActual] = useState(null);
-    const [datosDir, setDatosDir] = useState([]);
+    const [datosDir, setDatosDir] = useState(null);
+    const [siteData, setSiteData] = useState(null);
+    const [shootDate, setShootDate] = useState(null);
     const {datos} = props;
-
     const [state, setState] = useState(false);
 
 
-    const handleOpen = (position, dir) => {
+    const handleOpen = (position, fecha, site, addr) => {
 
         setPosicionActual(position);
-
+        setShootDate(miliFecha(fecha));
+        setDatosDir(addr);
+        setSiteData(site);
         setState(true);
     };
 
@@ -59,31 +47,31 @@ function Maps(props) {
     };
 
 
-const encontrarPos = (x,y) => {
+    const encontrarPos = (x, y) => {
 
-    const posActual = {
+        const posActual = {
 
 
-        lat: y,
-        lng: x
+            lat: y,
+            lng: x
 
-    }
+        }
 
-return posActual;
-
-}
-
-const direccion = (site,addr,shoot) =>
-{
-
-    const datos = {
-        site: site
+        return posActual;
 
 
     }
 
-}
-console.log(datos);
+    const miliFecha = (t) => {
+        let fecha = new Date(t)
+        fecha = fecha.toISOString().substring(0, 10);
+        return fecha;
+
+
+
+    }
+
+
     return (
 
         <LoadScript
@@ -94,14 +82,16 @@ console.log(datos);
                 center={center}
                 zoom={7}
             >
+
                 {datos.map((data) => (
 
-                    <Marker
-                        position={encontrarPos(data.geometry.x,data.geometry.y)}
-                        onClick={() => handleOpen(encontrarPos(data.geometry.x,data.geometry.y))}
+                    <Marker key={data.attributes.OBJECTID}
+
+                            position={encontrarPos(data.geometry.x, data.geometry.y)}
+                            onClick={() => handleOpen(encontrarPos(data.geometry.x, data.geometry.y), data.attributes.ShootDate, data.attributes.Site, data.attributes.Address)}
+
+
                     />
-
-
 
 
                 ))}
@@ -115,14 +105,17 @@ console.log(datos);
                     >
                         <div style={divStyle}>
 
-                            <h1>
-                                {datos.map ((data) =>(
+                            <h3>
+                                Lugar: {siteData}
+                                <br/>
+                                Dirección: {datosDir}
+                                <br/>
+                                Fecha de disparo: {shootDate}
 
-                                data.attributes.Address))}
-                            </h1>
+                            </h3>
                         </div>
                     </InfoWindow>
-                ) }
+                )}
 
             </GoogleMap>
         </LoadScript>

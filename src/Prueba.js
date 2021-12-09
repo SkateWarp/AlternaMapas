@@ -14,8 +14,9 @@ function Prueba(props) {
 
     const [direccion, setDireccion] = useState([]);
     const [jsonGuardado, setJsonGuardado] = useState([]);
-    const [valorGu, setValorGu] = useState();
+    const [valorGu, setValorGu] = useState("");
     const [jsonRaw, setJsonRaw] = useState([]); //Guardar JSON en crudo
+
 
     const dataJson = () => {
 
@@ -43,28 +44,14 @@ function Prueba(props) {
 
             })
 
-        // arreglado.map((data) => {
-        //
-        //     // console.log("Type", data.attributes.Type);
-        //
-        //     array.push({value: data.attributes.Type, label: data.attributes.Title})
-        //     console.log("MÍRAME",array);
-        //
-        //     // setValueData({value: data.attributes.Type, label: data.data.features.Title })
-        // })
-        //
-        // setValueData(array);
 
-        // setJsonGuardado(dataJson.data.features)
     };
 
 
-    const geometric = (event) =>{
+    const geometric = (event) => {
         let arre = [];
         // event.preventDefault() //Sino funciona, descomentalo. ¯\_(ツ)_/¯
         const pelis = jsonRaw.filter((movie) => movie.attributes.Title === event.target.value)
-        const geometria = pelis.map((data) => data.geometry)
-        //const addrs = pelis.map((data) => data.attributes.Address)
         arre = pelis.filter(function (currentObject) {
             if (currentObject.attributes.Address in arre) {
                 return false;
@@ -74,52 +61,48 @@ function Prueba(props) {
             }
 
 
-
         });
         setDireccion(arre);
 
         setValorGu(event.target.value);
 
-     //   ;
-      }
+        //   ;
+    }
+
+    useEffect(() => {
+
+        dataJson();
+    }, []);
 
 
-useEffect(() => {
+    return (
 
-    dataJson();
+        <div>
 
-}, []);
+            <FormControl fullWidth>
+                <InputLabel id="selector">Película</InputLabel>
+                <Select
+                    labelId="selector"
+                    id="simple-selector"
+                    value={valorGu}
+                    label="Película"
+                    onChange={geometric}
+                >
+                    {jsonGuardado && jsonGuardado.map((data) => (
 
+                        <MenuItem key={data.attributes.OBJECTID}
+                                  value={data.attributes.Title}>{data.attributes.Title}</MenuItem>
 
-return (
-
-    <div>
-
-        <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={valorGu}
-                label="Age"
-                onChange={geometric}
-            >
-                {jsonGuardado.map((data) => (
-
-                    <MenuItem value={data.attributes.Title}>{data.attributes.Title}</MenuItem>
-
-                ))}
-            </Select>
-        </FormControl>
-
-        {direccion.length > 0 && (
+                    ))}
+                </Select>
+            </FormControl>
 
             <Maps datos={direccion}/>
 
-        )}
-            </div>
 
-);
+        </div>
+
+    );
 }
 
 
