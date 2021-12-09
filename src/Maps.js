@@ -50,27 +50,18 @@ function Maps(props) {
     const encontrarPos = (x, y) => {
 
         const posActual = {
-
-
             lat: y,
             lng: x
-
         }
 
         return posActual;
-
-
     }
 
     const miliFecha = (t) => {
         let fecha = new Date(t)
         fecha = fecha.toISOString().substring(0, 10);
         return fecha;
-
-
-
     }
-
 
     return (
 
@@ -81,6 +72,8 @@ function Maps(props) {
                 mapContainerStyle={containerStyle}
                 center={center}
                 zoom={7}
+                onClick={handleClose}
+                clickableIcons={false}
             >
 
                 {datos.map((data) => (
@@ -89,7 +82,7 @@ function Maps(props) {
 
                             position={encontrarPos(data.geometry.x, data.geometry.y)}
                             onClick={() => handleOpen(encontrarPos(data.geometry.x, data.geometry.y), data.attributes.ShootDate, data.attributes.Site, data.attributes.Address)}
-
+                            onLoad={handleClose}
 
                     />
 
@@ -111,16 +104,12 @@ function Maps(props) {
                                 Dirección: {datosDir}
                                 <br/>
                                 Fecha de disparo: {shootDate}
-
                             </h3>
                         </div>
                     </InfoWindow>
                 )}
-
             </GoogleMap>
         </LoadScript>
     )
-
 }
-
 export default Maps;

@@ -79,6 +79,8 @@ function Prueba(props) {
 
         <div>
 
+            <br/>
+
             <FormControl fullWidth>
                 <InputLabel id="selector">Película</InputLabel>
                 <Select
