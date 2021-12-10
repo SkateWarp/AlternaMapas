@@ -103,7 +103,7 @@ function Maps(props) {
                                 <br/>
                                 Dirección: {datosDir}
                                 <br/>
-                                Fecha de rodaje: {shootDate}
+                                Fecha de rodaje (AAAA-MM-DD): {shootDate}
                             </h3>
                         </div>
                     </InfoWindow>
