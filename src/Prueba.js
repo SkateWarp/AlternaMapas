@@ -14,7 +14,7 @@ function Prueba(props) {
 
     const [direccion, setDireccion] = useState([]);
     const [jsonGuardado, setJsonGuardado] = useState([]);
-    const [valorGu, setValorGu] = useState("");
+    const [tituloActual, setTituloActual] = useState("");
     const [jsonRaw, setJsonRaw] = useState([]); //Guardar JSON en crudo
 
 
@@ -64,7 +64,7 @@ function Prueba(props) {
         });
         setDireccion(arre);
 
-        setValorGu(event.target.value);
+        setTituloActual(event.target.value);
 
         //   ;
     }
@@ -86,7 +86,7 @@ function Prueba(props) {
                 <Select
                     labelId="selector"
                     id="simple-selector"
-                    value={valorGu}
+                    value={tituloActual}
                     label="Película"
                     onChange={geometric}
                 >

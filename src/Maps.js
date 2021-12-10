@@ -27,7 +27,7 @@ function Maps(props) {
     const [siteData, setSiteData] = useState(null);
     const [shootDate, setShootDate] = useState(null);
     const {datos} = props;
-    const [state, setState] = useState(false);
+    const [visualizarInfo, setVisualizarInfo] = useState(false);
 
 
     const handleOpen = (position, fecha, site, addr) => {
@@ -36,13 +36,13 @@ function Maps(props) {
         setShootDate(miliFecha(fecha));
         setDatosDir(addr);
         setSiteData(site);
-        setState(true);
+        setVisualizarInfo(true);
     };
 
 
     const handleClose = () => {
 
-        setState(false);
+        setVisualizarInfo(false);
 
     };
 
@@ -90,7 +90,7 @@ function Maps(props) {
                 ))}
 
 
-                {state && (
+                {visualizarInfo && (
 
                     <InfoWindow
                         onCloseClick={handleClose}
@@ -103,7 +103,7 @@ function Maps(props) {
                                 <br/>
                                 Dirección: {datosDir}
                                 <br/>
-                                Fecha de disparo: {shootDate}
+                                Fecha de rodaje: {shootDate}
                             </h3>
                         </div>
                     </InfoWindow>
